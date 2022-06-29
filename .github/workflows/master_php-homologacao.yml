@@ -37,11 +37,12 @@ jobs:
           name: php-app
           path: .
 
-  deploy:
+  deploy-homologacao:
+    name: 'Homologação'
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: 'Homologacao'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -57,4 +58,27 @@ jobs:
           app-name: 'php-homologacao'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5EFAED3342884FD5A89EC9055F68FDF2 }}
+          package: .
+          
+  deploy-producao:
+    name: 'Produção'
+    runs-on: ubuntu-latest
+    needs: deploy-homologacao
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: php-app
+
+      - name: 'Deploy to Azure Web App'
+        uses: azure/webapps-deploy@v2
+        id: deploy-to-webapp
+        with:
+          app-name: 'php-producao'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.PHP_PRODUCAO_PUBLISHPROFILE }}
           package: .
