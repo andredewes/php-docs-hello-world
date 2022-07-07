@@ -74,7 +74,16 @@ jobs:
         with:
           name: php-app
 
-      - name: 'Deploy to Azure Web App'
+      - name: 'Deploy to Azure Web App - Pre-deploy Slot'
+        uses: azure/webapps-deploy@v2
+        id: deploy-to-webapp-slot
+        with:
+          app-name: 'php-producao'
+          slot-name: 'pre-deploy'
+          publish-profile: ${{ secrets.PHP_PRODUCAO_PUBLISHPROFILE }}
+          package: .
+          
+      - name: 'Deploy to Azure Web App - Produção'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
