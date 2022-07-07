@@ -1,6 +1,6 @@
 <?php
 
-echo "Hello World! ";
+echo "Hello World! <br><br>";
 
-echo "Este é o ambiente de: ";
+echo "Este é o ambiente de: <br>";
 echo getenv('ambiente');
