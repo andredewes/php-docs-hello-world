@@ -80,7 +80,7 @@ jobs:
         with:
           app-name: 'php-producao'
           slot-name: 'pre-deploy'
-          publish-profile: ${{ secrets.PHP_PRODUCAO_PUBLISHPROFILE }}
+          publish-profile: ${{ secrets.PHP_PRODUCAO_PRE_DEPLOY }}
           package: .
           
       - name: 'Deploy to Azure Web App - Produção'
